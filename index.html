@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SIRED</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#020617">
+<!-- App instalada: estos metas DEBEN ser estáticos (iOS los lee antes de dibujar). black-translucent = pantalla completa real, sin franja negra -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RECETA+">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Ícono de la pestaña (SIRED · salud digital). Para cambiarlo, reemplaza esta línea. -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%2322d3ee%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%232563eb%22/%3E%3Cstop offset=%221%22 stop-color=%22%236d28d9%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22c%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22/%3E%3Cstop offset=%221%22 stop-color=%22%23cffafe%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2215%22 fill=%22url(%23g)%22/%3E%3Cpath d=%22M25 11h14a3 3 0 0 1 3 3v11h11a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H42v11a3 3 0 0 1-3 3H25a3 3 0 0 1-3-3V39H11a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h11V14a3 3 0 0 1 3-3z%22 fill=%22url(%23c)%22/%3E%3Cpath d=%22M8 33h13l4-8 6 15 5-11 3 4h17%22 fill=%22none%22 stroke=%22%230b3b8f%22 stroke-width=%223.4%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%2253%22 cy=%2219%22 r=%223%22 fill=%22%23a5f3fc%22/%3E%3C/svg%3E ">
+
+<!-- =====================================================================
+     BLOQUE PWA · INSTALAR COMO APLICACIÓN  (todo dentro de este index.html)
+     Solo afecta a la app instalada: nombre + ícono. La pestaña web sigue
+     usando el ícono SIRED de arriba y el título de NOMBRE_PESTANA.
+     PARA OTRO SISTEMA: cambia solo los valores de la variable PWA.
+     ===================================================================== -->
+<!-- Ícono de iPhone/atajo Android (fijo: receta Rx sobre degradado azul-violeta; para otro sistema pega aquí la línea que genera  index.html#icono ) -->
+<link rel="apple-touch-icon" sizes="512x512" href="data:image/png;base64,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">
+<style>
+  html,body{background:#020617}
+  /* Pantalla de arranque de la app instalada: logo RECETA+ palpitante (SVG en línea = aparece en el primer dibujo) */
+  #splashApp{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:5;background:#020617;align-items:center;justify-content:center;transition:opacity .7s ease}
+  html.app-inst #splashApp{display:flex}
+  #splashApp.fuera{opacity:0;pointer-events:none}
+  #splashApp .ico{position:relative;width:132px;height:132px}
+  #splashApp .ico svg{display:block;width:100%;height:100%;border-radius:22%;box-shadow:0 0 30px rgba(109,31,217,.6);animation:latidoApp 1.3s ease-in-out infinite}
+  #splashApp .ico::before,#splashApp .ico::after{content:"";position:absolute;inset:0;border-radius:22%;border:2px solid rgba(139,92,246,.75);animation:ondaApp 1.3s ease-out infinite}
+  #splashApp .ico::after{animation-delay:.4s}
+  @keyframes latidoApp{0%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.09)}70%,100%{transform:scale(1)}}
+  @keyframes ondaApp{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.9);opacity:0}}
+  @media (prefers-reduced-motion:reduce){#splashApp .ico svg,#splashApp .ico::before,#splashApp .ico::after{animation:none}}
+</style>
+<!-- 1) Detecta lo antes posible si está abierta como app instalada (antes del primer dibujo) -->
+<script>
+(function () {
+  var h = document.documentElement;
+  var st = !!(window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches));
+  var ios = navigator.standalone === true;
+  if (st || ios) h.classList.add("app-inst");
+  if (ios) h.classList.add("app-ios");
+})();
+</script>
+<!-- 2) Íconos y manifest: se generan DESPUÉS del primer dibujo para no retrasar el arranque -->
+<script>
+(function () {
+  var PWA = {
+    nombre:       "RECETA+",    // nombre bajo el ícono al instalar
+    color1:       "#5b8dff",    // degradado del ícono: esquina superior izquierda
+    color2:       "#8b5cf6",    // degradado del ícono: esquina inferior derecha
+    colorRx:      "#5b5bf0",    // color de las letras "Rx" dentro de la hoja
+    colorDoblez:  "#c7d2fe",    // esquina doblada de la hoja
+    fondoApp:     "#020617",    // color de la pantalla de arranque de la app
+    fondoArranque:"#020617"     // fondo del arranque nativo de Android: NEGRO (el ícono "any" tiene esquinas transparentes, así solo se ve el cuadro redondeado)
+  };
+
+  // ---- Dibuja el ícono (hoja de receta con "Rx") y lo devuelve como imagen PNG ----
+  // forma: "redondeado" (esquinas transparentes) · "cuadrado" (lleno, iPhone) · "mascara" (lleno, glifo dentro de la zona segura de Android)
+  function icono(px, forma, glifo) {
+    var c = document.createElement("canvas"); c.width = c.height = px;
+    var x = c.getContext("2d"), k = px / 512;
+    x.scale(k, k);
+    if (forma === "mascara") { forma = "cuadrado"; glifo = glifo * .8; }
+    var g = x.createLinearGradient(0, 0, 512, 512);
+    g.addColorStop(0, PWA.color1); g.addColorStop(1, PWA.color2);
+    x.fillStyle = g; x.beginPath();
+    if (forma === "redondeado") {
+      var r = 112; x.moveTo(r, 0); x.arcTo(512, 0, 512, 512, r); x.arcTo(512, 512, 0, 512, r);
+      x.arcTo(0, 512, 0, 0, r); x.arcTo(0, 0, 512, 0, r); x.closePath();
+    } else { x.rect(0, 0, 512, 512); }
+    x.fill();
+    x.translate(256, 256); x.scale(glifo, glifo); x.translate(-256, -256);
+    x.fillStyle = "#fff";
+    x.fill(new Path2D("M178 108H300L364 172V382A26 26 0 0 1 338 408H178A26 26 0 0 1 152 382V134A26 26 0 0 1 178 108Z"));
+    x.fillStyle = PWA.colorDoblez;
+    x.fill(new Path2D("M300 108V150A22 22 0 0 0 322 172H364Z"));
+    x.strokeStyle = PWA.colorRx; x.lineWidth = 20; x.lineCap = "round"; x.lineJoin = "round";
+    x.stroke(new Path2D("M206 336V216H246A30 30 0 0 1 246 276H206M236 276L306 352M306 296L252 352"));
+    return c.toDataURL("image/png");
+  }
+
+  function link(rel, href) { var l = document.createElement("link"); l.rel = rel; l.href = href; document.head.appendChild(l); }
+
+  // AYUDANTE PARA OTROS SISTEMAS: abre esta página con  #icono  al final de la dirección
+  if (location.hash === "#icono") {
+    window.addEventListener("load", function () {
+      var t = document.createElement("textarea");
+      t.value = '<link rel="apple-touch-icon" href="' + icono(180, "cuadrado", 1) + '">';
+      t.style.cssText = "position:fixed;z-index:99;left:8px;right:8px;top:8px;height:40vh;background:#fff;color:#000;font:12px monospace";
+      document.body.appendChild(t); t.select();
+    });
+  }
+
+  function montar() {
+    try {
+      var base = location.origin + location.pathname;
+      var carpeta = base.replace(/[^\/]*$/, "");
+      // maskable = fondo lleno con la hoja dentro de la zona segura; 'any' = cuadro redondeado con esquinas transparentes
+      var i192 = icono(192, "redondeado", 1), i512 = icono(512, "redondeado", 1), imask = icono(512, "mascara", 1);
+      var manifest = {
+        id: base, name: PWA.nombre, short_name: PWA.nombre, lang: "es",
+        start_url: base, scope: carpeta, display: "standalone", orientation: "portrait",
+        background_color: PWA.fondoArranque, theme_color: PWA.fondoApp,
+        icons: [
+          { src: i192, sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: i512, sizes: "512x512", type: "image/png", purpose: "any" },
+          { src: imask, sizes: "512x512", type: "image/png", purpose: "maskable" }
+        ]
+      };
+      link("manifest", URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" })));
+    } catch (e) { /* si algo falla, la página web sigue funcionando igual */ }
+  }
+  function tarde() { requestAnimationFrame(function () { setTimeout(montar, 50); }); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", tarde); else tarde();
+})();
+</script>
+<!-- ===================== FIN BLOQUE PWA ===================== -->
+<!-- Tipografía tecnológica (si no carga, se usa una de respaldo) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+  :root{--cy:#22d3ee;--az:#2563eb;--vi:#8b5cf6;--fondo:#020617}
+  html,body{margin:0;height:100%;background:var(--fondo);overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+  /* Alto del pie de marca: franja de contenido + zona segura inferior (iPhone). Android = 0 de zona segura. */
+  :root{--pie-txt:30px;--pie-h:calc(var(--pie-txt) + env(safe-area-inset-bottom,0px))}
+  /* Marco del sistema: ahora TERMINA donde empieza el pie, así el menú flotante de la app
+     queda siempre por encima del pie, sin que nada lo tape ni lo roce. */
+  #marco{position:fixed;top:0;left:0;right:0;bottom:var(--pie-h);background:var(--fondo)}
+  /* iPhone instalado: el título baja un poco más debajo de la barra de estado / isla dinámica */
+  html.app-ios #marco{top:calc(env(safe-area-inset-top,0px) + 18px);left:env(safe-area-inset-left,0px);right:env(safe-area-inset-right,0px)}
+  #app{display:block;width:100%;height:100%;border:0;background:var(--fondo)}
+  /* Pie de marca (iPhone y Android): ocupa la franja inferior completa, incluida la zona segura = sin línea negra */
+  #pieSired{position:fixed;left:0;right:0;bottom:0;height:var(--pie-h);z-index:3;pointer-events:none;overflow:hidden;
+    background:linear-gradient(180deg,#06102e 0%,#020617 100%);font-family:'Orbitron',system-ui,sans-serif}
+  #pieSired canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  #pieSired .cont{position:absolute;left:0;right:0;top:0;height:var(--pie-txt);display:flex;align-items:center;justify-content:center;gap:10px}
+  #pieSired .cont::before{content:"";position:absolute;left:50%;top:50%;width:min(86%,300px);height:22px;transform:translate(-50%,-50%);
+    background:radial-gradient(ellipse at center,rgba(2,6,23,.92) 0%,rgba(2,6,23,.82) 45%,rgba(2,6,23,0) 100%)}
+  /* Línea divisoria app/pie: filamento tenue + haz de energía que la recorre + resplandor hacia arriba */
+  #pieSired .lin{position:absolute;left:0;right:0;top:0;height:2px;z-index:2;
+    background:linear-gradient(90deg,rgba(34,211,238,.15),rgba(99,102,241,.55),rgba(34,211,238,.15));overflow:hidden}
+  #pieSired .lin::before{content:"";position:absolute;top:0;left:-35%;width:35%;height:100%;
+    background:linear-gradient(90deg,transparent,#67e8f9 45%,#fff 55%,#a78bfa,transparent);
+    filter:drop-shadow(0 0 4px #22d3ee);animation:haz 2.8s cubic-bezier(.5,0,.5,1) infinite}
+  @keyframes haz{to{left:100%}}
+  #pieSired .res{position:absolute;left:0;right:0;top:0;height:14px;z-index:1;
+    background:linear-gradient(180deg,rgba(34,211,238,.16),transparent);animation:resp 2.8s ease-in-out infinite}
+  @keyframes resp{50%{opacity:.45}}
+  #pieSired .pt{position:relative;width:6px;height:6px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee;animation:ptPie 1.2s ease-in-out infinite}
+  #pieSired .pt:last-child{animation-delay:.6s;background:#8b5cf6;box-shadow:0 0 10px #8b5cf6}
+  @keyframes ptPie{50%{transform:scale(1.7);opacity:.5}}
+  #pieSired .tx{position:relative;font-size:10px;font-weight:800;letter-spacing:.32em;padding-left:.34em;color:transparent;white-space:nowrap;
+    background:linear-gradient(100deg,#a5f3fc,#22d3ee,#3b82f6,#8b5cf6,#e9d5ff,#22d3ee);background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;animation:flujoPie 3.5s linear infinite;filter:drop-shadow(0 0 6px rgba(34,211,238,.6))}
+  @keyframes flujoPie{to{background-position:-250% 0}}
+  @media (max-width:340px){#pieSired .tx{font-size:10px;letter-spacing:.24em}}
+  @media (prefers-reduced-motion:reduce){#pieSired .lin::before,#pieSired .res,#pieSired .pt,#pieSired .tx{animation:none}}
+
+
+  /* ===== PANTALLA DE CARGA ===== */
+  #cargando{position:fixed;inset:0;z-index:2;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#0b1a3d 0%,#050b24 45%,#020617 100%);
+    color:#e2e8f0;font-family:'Rajdhani',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;
+    transition:opacity .7s ease,transform .7s ease,filter .7s ease}
+  #cargando.salir{opacity:0;transform:scale(1.18);filter:blur(6px) brightness(1.8)}
+  #fx{position:absolute;inset:0;width:100%;height:100%}
+  #cargando::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+
+  .escena{position:relative;width:min(92vw,620px);display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1;padding-bottom:4vh}
+
+  /* anillos holográficos */
+  .anillos{position:absolute;top:50%;left:50%;width:min(88vw,540px);aspect-ratio:1;transform:translate(-50%,-62%);pointer-events:none}
+  .anillos svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .a1{animation:giro 22s linear infinite}
+  .a2{animation:giro 14s linear infinite reverse}
+  .a3{animation:giro 36s linear infinite}
+  @keyframes giro{to{transform:rotate(360deg)}}
+  .anillos .nucleo{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.22),rgba(37,99,235,.08) 55%,transparent 70%);animation:latido 2.4s ease-in-out infinite}
+  @keyframes latido{50%{transform:scale(1.12);opacity:.65}}
+
+  /* palabra SIRED */
+  .marca{position:relative;margin:0;padding:0 0 0 .2em;font-family:'Orbitron','Rajdhani',system-ui,sans-serif;font-weight:900;
+    font-size:clamp(58px,19vw,138px);line-height:1;letter-spacing:.2em;text-transform:uppercase;user-select:none;
+    animation:entrada 1.4s cubic-bezier(.2,.8,.2,1) both}
+  .marca .txt{position:relative;display:block;color:transparent;
+    background:linear-gradient(100deg,#a5f3fc 0%,#22d3ee 22%,#3b82f6 50%,#8b5cf6 78%,#e9d5ff 100%);background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;animation:flujo 4s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(34,211,238,.55)) drop-shadow(0 0 38px rgba(59,130,246,.45))}
+  @keyframes flujo{to{background-position:-220% 0}}
+  .marca::before,.marca::after{content:attr(data-t);position:absolute;inset:0;padding-left:.2em;mix-blend-mode:screen;pointer-events:none;opacity:.85}
+  .marca::before{color:#06b6d4;animation:glitchA 5.5s steps(1) infinite}
+  .marca::after{color:#a855f7;animation:glitchB 5.5s steps(1) infinite}
+  @keyframes glitchA{0%,90%,100%{transform:none;clip-path:inset(0 0 100% 0)}91%{transform:translate(-5px,0);clip-path:inset(18% 0 55% 0)}93%{transform:translate(4px,0);clip-path:inset(60% 0 12% 0)}95%{transform:translate(-3px,0);clip-path:inset(35% 0 40% 0)}}
+  @keyframes glitchB{0%,90%,100%{transform:none;clip-path:inset(0 0 100% 0)}92%{transform:translate(5px,0);clip-path:inset(50% 0 20% 0)}94%{transform:translate(-4px,0);clip-path:inset(8% 0 70% 0)}96%{transform:translate(3px,0);clip-path:inset(72% 0 5% 0)}}
+  @keyframes entrada{from{opacity:0;letter-spacing:.7em;filter:blur(14px)}to{opacity:1;letter-spacing:.2em;filter:blur(0)}}
+
+  /* haz de escaneo sobre la palabra */
+  .haz{position:absolute;left:-6%;right:-6%;height:2px;top:0;background:linear-gradient(90deg,transparent,#67e8f9,#fff,#67e8f9,transparent);
+    box-shadow:0 0 18px 4px rgba(34,211,238,.7);animation:barrido 2.8s ease-in-out infinite;z-index:3}
+  @keyframes barrido{0%{top:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{top:100%;opacity:0}}
+
+  /* reflejo holográfico */
+  .reflejo{position:relative;width:100%;height:clamp(26px,7vw,52px);overflow:hidden;margin-top:2px;opacity:.28;
+    -webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
+  .reflejo span{display:block;transform:scaleY(-1);transform-origin:center top;font-family:'Orbitron',system-ui,sans-serif;font-weight:900;
+    font-size:clamp(58px,19vw,138px);line-height:1;letter-spacing:.2em;padding-left:.2em;color:#22d3ee;filter:blur(1.5px)}
+
+  .lema{margin:clamp(10px,2.4vh,20px) 0 0;font-family:'Orbitron',system-ui,sans-serif;font-weight:500;font-size:clamp(9px,2.5vw,12px);
+    letter-spacing:.42em;padding-left:.42em;color:#7dd3fc;opacity:.85;animation:aparece 1.6s .6s both}
+  @keyframes aparece{from{opacity:0;transform:translateY(8px)}to{opacity:.85;transform:none}}
+
+  /* barra de progreso */
+  .panel{width:min(78vw,380px);margin-top:clamp(22px,5vh,40px);animation:aparece 1.6s .9s both}
+  .barra{position:relative;height:6px;border-radius:6px;background:rgba(148,163,184,.14);overflow:hidden;
+    box-shadow:0 0 0 1px rgba(34,211,238,.25),0 0 18px rgba(34,211,238,.15)}
+  #relleno{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#06b6d4,#3b82f6,#8b5cf6);
+    box-shadow:0 0 14px rgba(34,211,238,.9);transition:width .25s linear;position:relative}
+  #relleno::after{content:"";position:absolute;top:0;right:0;width:36px;height:100%;background:linear-gradient(90deg,transparent,#fff);opacity:.9}
+  .datos{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;font-weight:600;letter-spacing:.14em;color:#94a3b8}
+  #estado{color:#a5f3fc;text-align:left}
+  #pct{font-family:'Orbitron',system-ui,sans-serif;font-weight:500;color:#22d3ee;min-width:3.2em;text-align:right}
+
+  #ayuda{position:relative;margin-top:16px;font-size:13px;letter-spacing:.05em;color:#94a3b8;opacity:0;transition:opacity .4s}
+  #ayuda a{color:#22d3ee}
+
+  /* esquinas HUD */
+  .esq{position:absolute;width:34px;height:34px;border:2px solid rgba(34,211,238,.55);z-index:1;animation:aparece 1.2s .3s both}
+  .esq.tl{top:max(18px,env(safe-area-inset-top));left:18px;border-right:0;border-bottom:0}
+  .esq.tr{top:max(18px,env(safe-area-inset-top));right:18px;border-left:0;border-bottom:0}
+  .esq.bl{bottom:max(18px,env(safe-area-inset-bottom));left:18px;border-right:0;border-top:0}
+  .esq.br{bottom:max(18px,env(safe-area-inset-bottom));right:18px;border-left:0;border-top:0}
+
+  @media (prefers-reduced-motion:reduce){
+    .a1,.a2,.a3,.haz,.marca::before,.marca::after,.marca .txt,.anillos .nucleo{animation:none}
+    .marca{animation:none}
+  }
+</style>
+</head>
+<body>
+<!-- BLOQUE PWA (pantalla de arranque con el logo RECETA+, solo app instalada) -->
+<div id="splashApp" aria-hidden="true"><div class="ico">
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="url(#gsp)"/><path fill="#fff" d="M178 108H300L364 172V382A26 26 0 0 1 338 408H178A26 26 0 0 1 152 382V134A26 26 0 0 1 178 108Z"/><path fill="#c7d2fe" d="M300 108V150A22 22 0 0 0 322 172H364Z"/><path fill="none" stroke="#5b5bf0" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" d="M206 336V216H246A30 30 0 0 1 246 276H206M236 276L306 352M306 296L252 352"/></svg>
+</div></div>
+<script>
+  (function () {
+    var sp = document.getElementById("splashApp");
+    if (!document.documentElement.classList.contains("app-inst")) return;
+    setTimeout(function () { sp.classList.add("fuera"); setTimeout(function () { sp.style.display = "none"; }, 800); }, 2200);
+  })();
+</script>
+<!-- FIN BLOQUE PWA (pantalla de arranque) -->
+<div id="cargando">
+  <canvas id="fx"></canvas>
+  <span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>
+
+  <div class="escena">
+    <div class="anillos" aria-hidden="true">
+      <div class="nucleo"></div>
+      <svg class="a1" viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" fill="none" stroke="#22d3ee" stroke-opacity=".55" stroke-width=".6" stroke-dasharray="2 5"/><path d="M100 2a98 98 0 0 1 70 29" fill="none" stroke="#67e8f9" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="a2" viewBox="0 0 200 200"><circle cx="100" cy="100" r="84" fill="none" stroke="#3b82f6" stroke-opacity=".5" stroke-width=".7" stroke-dasharray="14 6 2 6"/><path d="M16 100a84 84 0 0 1 30-64" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"/><path d="M184 100a84 84 0 0 1-30 64" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="a3" viewBox="0 0 200 200"><circle cx="100" cy="100" r="70" fill="none" stroke="#8b5cf6" stroke-opacity=".45" stroke-width=".6" stroke-dasharray="1 4"/><path d="M100 30a70 70 0 0 1 60 35" fill="none" stroke="#c4b5fd" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
+
+    <h1 class="marca" id="marca" data-t="SIRED"><span class="txt" id="nombre">SIRED</span><i class="haz"></i></h1>
+    <div class="reflejo" aria-hidden="true"><span id="reflejo">SIRED</span></div>
+    <p class="lema">SISTEMA DE INFORMACION Y RED DIGITAL</p>
+
+    <div class="panel">
+      <div class="barra"><div id="relleno"></div></div>
+      <div class="datos"><span id="estado">INICIANDO NÚCLEO</span><span id="pct">0%</span></div>
+    </div>
+    <small id="ayuda">Si tarda mucho, <a id="directo" href="#">abrir directamente</a></small>
+  </div>
+</div>
+<div id="pieSired" aria-hidden="true"><canvas id="pieFx"></canvas><i class="res"></i><i class="lin"></i><div class="cont"><i class="pt"></i><span class="tx" id="pieTxt">TECNOLOGÍA SIRED</span><i class="pt"></i></div></div>
+<div id="marco"><iframe id="app" title="Aplicación" allow="clipboard-write; web-share; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+
+<noscript>Esta página necesita JavaScript activado.</noscript>
+<script>
+  // =====================================================================
+  //  ÚNICO LUGAR QUE DEBES EDITAR
+  // =====================================================================
+
+  // 1) Pega aquí la URL de tu aplicación web de Apps Script (termina en /exec):
+  var URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbyV4NGaCK8vG2SEnzZ03XFDz2OQ1FnRt5C-E7Sm2Rceig6GBx-Qck26hLVTo1PWQXak/exec";
+
+  // 2) Nombre que aparece en la PESTAÑA del navegador (pon el que quieras):
+  var NOMBRE_PESTANA = "RECETA_SD";
+
+  // 3) Texto de la PANTALLA DE CARGA (la palabra grande y brillante):
+  var TEXTO_CARGA = "SIRED";
+
+  // 4) PIE DE MARCA (franja inferior animada):
+  var PIE = {
+    mostrar: true,                  // false = oculta el pie por completo
+    texto:   "TECNOLOGÍA SIRED",    // texto del pie
+    alto:    30                     // alto en px (sin contar la zona segura del iPhone): 24 muy fino · 30 normal · 40 grueso
+  };
+
+  // =====================================================================
+  //  No toques nada de aquí para abajo
+  // =====================================================================
+  var $ = function (id) { return document.getElementById(id); };
+  document.title = (NOMBRE_PESTANA || "").trim() || "Aplicación";
+  var texto = (TEXTO_CARGA || "").trim();
+  $("nombre").textContent = texto;
+  $("marca").setAttribute("data-t", texto);
+  $("reflejo").textContent = texto;
+
+  /* ---------- Aplica la configuración del pie ---------- */
+  (function () {
+    var r = document.documentElement.style;
+    if (PIE.mostrar === false) { r.setProperty("--pie-txt", "0px"); $("pieSired").style.display = "none"; return; }
+    r.setProperty("--pie-txt", Math.max(18, Number(PIE.alto) || 30) + "px");
+    if (PIE.texto) $("pieTxt").textContent = PIE.texto;
+  })();
+
+  /* ---------- Fondo animado: rejilla en perspectiva + partículas ---------- */
+  (function () {
+    var cv = $("fx"), cx = cv.getContext("2d"), W, H, DPR, t = 0, parts = [];
+    var quieto = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function medir() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      var n = Math.round(Math.min(90, W * H / 14000));
+      parts = [];
+      for (var i = 0; i < n; i++) parts.push({ x: Math.random() * W, y: Math.random() * H, v: .15 + Math.random() * .5, r: .6 + Math.random() * 1.6, c: Math.random() < .7 ? "34,211,238" : "139,92,246" });
+    }
+    function dibujar() {
+      cx.clearRect(0, 0, W, H);
+      var hz = H * .6, i, y, p;
+      // líneas horizontales que avanzan hacia el espectador
+      for (i = 0; i < 16; i++) {
+        p = ((i + t * .012) % 16) / 16; p = p * p;
+        y = hz + (H - hz) * p;
+        cx.strokeStyle = "rgba(34,211,238," + (.04 + p * .32) + ")"; cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(0, y); cx.lineTo(W, y); cx.stroke();
+      }
+      // líneas que convergen en el horizonte
+      for (i = -14; i <= 14; i++) {
+        cx.strokeStyle = "rgba(99,102,241," + (.28 - Math.abs(i) * .012) + ")";
+        cx.beginPath(); cx.moveTo(W / 2 + i * 14, hz); cx.lineTo(W / 2 + i * W * .16, H); cx.stroke();
+      }
+      // resplandor del horizonte
+      var g = cx.createLinearGradient(0, hz - 60, 0, hz + 40);
+      g.addColorStop(0, "rgba(34,211,238,0)"); g.addColorStop(.6, "rgba(34,211,238,.16)"); g.addColorStop(1, "rgba(34,211,238,0)");
+      cx.fillStyle = g; cx.fillRect(0, hz - 60, W, 100);
+      // partículas de datos
+      for (i = 0; i < parts.length; i++) {
+        var q = parts[i];
+        if (!quieto) { q.y -= q.v; if (q.y < -4) { q.y = H + 4; q.x = Math.random() * W; } }
+        cx.fillStyle = "rgba(" + q.c + "," + (.25 + .5 * Math.abs(Math.sin(t * .02 + i))) + ")";
+        cx.beginPath(); cx.arc(q.x, q.y, q.r, 0, 6.283); cx.fill();
+      }
+      if (!quieto) { t++; if ($("cargando").style.display !== "none") requestAnimationFrame(dibujar); }
+    }
+    window.addEventListener("resize", medir);
+    medir(); dibujar();
+  })();
+
+  /* ---------- Progreso y mensajes de estado ---------- */
+  var progreso = 0, listo = false, cerrando = false;
+  var fases = [[0, "INICIANDO NÚCLEO"], [18, "CONECTANDO SERVIDOR"], [42, "SINCRONIZANDO DATOS"], [66, "CARGANDO MÓDULOS"], [84, "CASI LISTO"], [100, "SISTEMA EN LÍNEA"]];
+  function pintar() {
+    var v = Math.floor(progreso), e = fases[0][1];
+    for (var i = 0; i < fases.length; i++) if (v >= fases[i][0]) e = fases[i][1];
+    $("relleno").style.width = progreso + "%";
+    $("pct").textContent = v + "%";
+    $("estado").textContent = e;
+  }
+  var reloj = setInterval(function () {
+    if (!listo) progreso += Math.max(.08, (90 - progreso) * .025);
+    else progreso = Math.min(100, progreso + 4);
+    pintar();
+    if (listo && progreso >= 100 && !cerrando) {
+      cerrando = true; clearInterval(reloj);
+      setTimeout(function () {
+        var c = $("cargando"); c.classList.add("salir");
+        setTimeout(function () { c.style.display = "none"; }, 750);
+      }, 350);
+    }
+  }, 60);
+
+  if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(URL_APPS_SCRIPT)) {
+    clearInterval(reloj);
+    document.querySelector(".panel").style.display = "none";
+    $("ayuda").innerHTML = "FALTA CONFIGURAR LA URL<br>Edita este archivo y pega la URL /exec en <b>URL_APPS_SCRIPT</b>";
+    $("ayuda").style.opacity = "1";
+  } else {
+    // Se conserva lo que venga después del "?" (por ejemplo ?verificar=SOL-...)
+    var destino = URL_APPS_SCRIPT + (location.search || "");
+    var marco = $("app");
+    marco.src = destino;
+    $("directo").href = destino;
+    marco.addEventListener("load", function () { listo = true; });
+    setTimeout(function () { $("ayuda").style.opacity = "1"; }, 9000);
+  }
+
+  /* ---------- Pie de marca: circuito digital con pulsos eléctricos ---------- */
+  (function () {
+    var cv = $("pieFx"); if (!cv) return;
+    var cx = cv.getContext("2d"), W = 0, H = 0, DPR = 1, trazos = [], pulsos = [], last = 0, corriendo = false;
+    var quieto = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var COL = ["34,211,238", "59,130,246", "139,92,246"];
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function medir() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      if (!W || !H) return;
+      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      trazos = []; pulsos = [];
+      var filas = Math.max(4, Math.round(H / 9));
+      for (var r = 0; r < filas; r++) {
+        var y = 4 + (H - 8) * r / (filas - 1), x = -10, pts = [[x, y]], col = COL[r % 3];
+        while (x < W + 10) {
+          x += rnd(18, 60); pts.push([x, y]);
+          if (Math.random() < .55) {
+            var dy = (Math.random() < .5 ? -1 : 1) * rnd(5, 11);
+            if (y + dy < 3 || y + dy > H - 3) dy = -dy;
+            x += Math.abs(dy); y += dy; pts.push([x, y]);
+          }
+        }
+        var acum = [0], tot = 0;
+        for (var i = 1; i < pts.length; i++) {
+          tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); acum.push(tot);
+        }
+        trazos.push({ pts: pts, acum: acum, tot: tot, col: col });
+        var n = Math.random() < .6 ? 1 : 2;
+        for (var k = 0; k < n; k++) pulsos.push({ t: trazos.length - 1, s: rnd(0, tot), v: rnd(50, 130), len: rnd(24, 46) });
+      }
+      dibujar(0);
+    }
+    function punto(tr, s) {
+      var a = tr.acum, i = 1;
+      while (i < a.length - 1 && a[i] < s) i++;
+      var f = (s - a[i - 1]) / ((a[i] - a[i - 1]) || 1);
+      return [tr.pts[i - 1][0] + (tr.pts[i][0] - tr.pts[i - 1][0]) * f, tr.pts[i - 1][1] + (tr.pts[i][1] - tr.pts[i - 1][1]) * f];
+    }
+    function dibujar(dt) {
+      cx.clearRect(0, 0, W, H);
+      var i, j, tr;
+      // pistas tenues + nodos
+      for (i = 0; i < trazos.length; i++) {
+        tr = trazos[i];
+        cx.strokeStyle = "rgba(" + tr.col + ",.20)"; cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(tr.pts[0][0], tr.pts[0][1]);
+        for (j = 1; j < tr.pts.length; j++) cx.lineTo(tr.pts[j][0], tr.pts[j][1]);
+        cx.stroke();
+        cx.fillStyle = "rgba(" + tr.col + ",.45)";
+        for (j = 1; j < tr.pts.length - 1; j += 2) { cx.beginPath(); cx.arc(tr.pts[j][0], tr.pts[j][1], 1.3, 0, 6.283); cx.fill(); }
+      }
+      // pulsos eléctricos con estela
+      for (i = 0; i < pulsos.length; i++) {
+        var p = pulsos[i]; tr = trazos[p.t];
+        if (!quieto) { p.s += p.v * dt; if (p.s > tr.tot + p.len) { p.s = -rnd(0, 80); p.v = rnd(50, 130); } }
+        if (quieto && p.s < 0) continue;
+        var pasos = 9, prev = null;
+        for (j = 0; j <= pasos; j++) {
+          var s = p.s - p.len * (1 - j / pasos);
+          if (s < 0 || s > tr.tot) { prev = null; continue; }
+          var q = punto(tr, s);
+          if (prev) {
+            cx.strokeStyle = "rgba(" + tr.col + "," + (.1 + .9 * j / pasos) + ")"; cx.lineWidth = 1.2 + 1.2 * j / pasos;
+            cx.beginPath(); cx.moveTo(prev[0], prev[1]); cx.lineTo(q[0], q[1]); cx.stroke();
+          }
+          prev = q;
+        }
+        if (p.s >= 0 && p.s <= tr.tot) {
+          var h = punto(tr, p.s);
+          cx.shadowColor = "rgba(" + tr.col + ",1)"; cx.shadowBlur = 8;
+          cx.fillStyle = "#e0faff"; cx.beginPath(); cx.arc(h[0], h[1], 1.8, 0, 6.283); cx.fill();
+          cx.shadowBlur = 0;
+        }
+      }
+    }
+    function bucle(ts) {
+      if (!corriendo) return;
+      var dt = Math.min(.05, (ts - last) / 1000 || 0); last = ts;
+      dibujar(dt); requestAnimationFrame(bucle);
+    }
+    function iniciar() { if (quieto || corriendo) return; corriendo = true; last = performance.now(); requestAnimationFrame(bucle); }
+    document.addEventListener("visibilitychange", function () { if (document.hidden) corriendo = false; else iniciar(); });
+    window.addEventListener("resize", medir);
+    window.addEventListener("orientationchange", function () { setTimeout(medir, 250); });
+    medir(); iniciar();
+  })();
+</script>
+</body>
+</html>
